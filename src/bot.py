@@ -1,8 +1,9 @@
-import time, sys, requests, random, json, logging, subprocess
+import time, sys, requests, random, json, logging, subprocess, os, urllib3
 from tMsgSender import tMsgSender
 from tMsgFetcher import tMsgFetcher, messageInfo
 from tMsgText import tMsgText
 from config import Config
+
 
 class bot:
     def __init__(self):
@@ -23,10 +24,15 @@ class bot:
         logging.info(f"Message offset updated to {self.msgOffset}")
     
     def verifyAPIToken(self):
+        proxies = {
+           'http': os.environ.get("HTTP_PROXY"),
+           'https': os.environ.get("HTTPS_PROXY"),
+        }
+        logging.info(f"Using proxies: {proxies}")  # Log information about used proxies
         try:
             logging.info("Attempting to verify Telegram API token")
             # connect to Telegram API with their getMe test method for checking API works
-            testResponse: requests.Response = requests.get(f"https://api.telegram.org/bot{conf.tToken}/getMe")
+            testResponse: requests.Response = requests.get(f"https://api.telegram.org/bot{conf.tToken}/getMe",verify=False, proxies=proxies)
             # set the token to be used if we get a 2xx response code back
             match testResponse.ok:
                 case True:
@@ -45,7 +51,12 @@ class bot:
     
     def getBotInfo(self):
         logging.info("Getting Bot info from Telegram")
-        self.botInfo = json.loads(self.sender.sendGetMe().content)['result']
+        response = self.sender.sendGetMe()
+        if not response.content:
+            logging.error("Empty response received from Telegram")
+            # Handle empty response here (e.g., retry)
+            return
+        self.botInfo = json.loads(response.content)['result']
         self.bot_id = self.botInfo['id']
         self.bot_username = self.botInfo['username']
         logging.info(f"Got bot info - ID: {self.bot_id}, username: {self.bot_username}")
@@ -71,6 +82,7 @@ class bot:
 
 
 if __name__ == '__main__':
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     print("Loading configuration")
     conf: Config = Config()
     logging.basicConfig(format='%(asctime)s %(levelname)s - %(message)s', level=conf.logLevel)

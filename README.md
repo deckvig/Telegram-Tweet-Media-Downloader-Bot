@@ -21,3 +21,10 @@ A valid Twitter cookie file allows gallery-dl to access the same tweets you can 
 ### gallery-dl configuration
 gallery-dl accepts a wide range of configuration options. An example `gallery-dl.conf` file is included, but this can be adjusted to your requirements (See [gallery-dl configuration](https://github.com/mikf/gallery-dl#configuration) for more).
 
+
+### Proxy Mode
+use request[socks] mode, and config by:
+```
+export  HTTP_PROXY=socks5://host:port
+export  HTTPS_PROXY=socks5://host:port
+```

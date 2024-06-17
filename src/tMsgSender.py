@@ -1,4 +1,4 @@
-import requests, logging
+import requests, logging, os
 
 class recievedData:
     def __init__(self, isOk: bool, isErr: bool=False, statusCode: int=-1, content: bytes=bytearray(0), errDetails: str=""):
@@ -46,12 +46,15 @@ class tMsgSender:
 
     def sendRequest(self, msgParams: list) -> recievedData:
         requestString = self.generateRequest(msgParams)
-
+        proxies = {
+           'http': os.environ.get("HTTP_PROXY"),
+           'https': os.environ.get("HTTPS_PROXY")
+        }
         try:
             # Use both a connect and read timeout. Should establish a connection
             # to Telegram within the connect timeout, but shouldn't consider the
             # connection to have been broken until after the long polling duration
-            request: requests.Response = requests.get(requestString, timeout=(5, 60))
+            request: requests.Response = requests.get(requestString, timeout=(5, 60),verify=False, proxies=proxies)
             # return True/False for a status code of 2XX, the status code itself and the response content
             return recievedData(request.ok, statusCode=request.status_code, content=request.content)
         except Exception as e:
