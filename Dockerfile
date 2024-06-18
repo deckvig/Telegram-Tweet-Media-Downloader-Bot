@@ -21,4 +21,4 @@ COPY gallery-dl.* /etc/gallery-dl.conf
 COPY ./src ./src
 
 # Run the bot.py file
-ENTRYPOINT [ "/usr/bin/tini", "--", "python", "src/bot.py" ]
+ENTRYPOINT [ "/sbin/tini", "--", "python", "src/bot.py" ]
