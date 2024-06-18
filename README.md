@@ -1,9 +1,16 @@
 # Telegram Tweet Media Downloader Bot
-[![Tests](https://img.shields.io/github/actions/workflow/status/brandonmoss-99/Telegram-Tweet-Media-Downloader-Bot/tests.yml?label=tests&logo=github)](https://github.com/brandonmoss-99/Telegram-Tweet-Media-Downloader-Bot/actions/workflows/tests.yml)
-[![License](https://img.shields.io/github/license/brandonmoss-99/Telegram-Tweet-Media-Downloader-Bot?logo=github)](https://github.com/brandonmoss-99/Telegram-Tweet-Media-Downloader-Bot/blob/main/LICENSE) [![Docker image pulls](https://img.shields.io/docker/pulls/brandonmoss99/telegram-tweet-media-downloader?logo=docker)](https://hub.docker.com/r/brandonmoss99/telegram-tweet-media-downloader) [![Docker image size](https://img.shields.io/docker/image-size/brandonmoss99/telegram-tweet-media-downloader?logo=docker)](https://hub.docker.com/r/brandonmoss99/telegram-tweet-media-downloader)
-
+[![Run tests](https://github.com/deckvig/Telegram-Tweet-Media-Downloader-Bot/actions/workflows/tests.yml/badge.svg)](https://github.com/deckvig/Telegram-Tweet-Media-Downloader-Bot/actions/workflows/tests.yml)
+![GitHub License](https://img.shields.io/github/license/deckvig/Telegram-Tweet-Media-Downloader-Bot)
+![Docker Image Size](https://img.shields.io/docker/image-size/deckvig/gallery-dl)
 ## What does this do?
 This is a bot for the Telegram messaging service, with the purpose of downloading and saving media from tweets to a local machine (thanks to [gallery-dl](https://github.com/mikf/gallery-dl)). It is intended to be run within a containerised solution.
+
+## Support Proxy Mode
+use request[socks] mode, and config by:
+```
+export  HTTP_PROXY=socks5://host:port
+export  HTTPS_PROXY=socks5://host:port
+```
 
 ## Configuration
 ### Environment variables
@@ -19,12 +26,6 @@ The following environment variables are used by the bot, and should be passed in
 A valid Twitter cookie file allows gallery-dl to access the same tweets you can see. Without this, it will only be able to access what is publicly visible. A file named `twitter_cookies.txt` should be present in the top directory.
 
 ### gallery-dl configuration
+> it can use to download every website which support by gallery-dl configuratoin
+
 gallery-dl accepts a wide range of configuration options. An example `gallery-dl.conf` file is included, but this can be adjusted to your requirements (See [gallery-dl configuration](https://github.com/mikf/gallery-dl#configuration) for more).
-
-
-### Proxy Mode
-use request[socks] mode, and config by:
-```
-export  HTTP_PROXY=socks5://host:port
-export  HTTPS_PROXY=socks5://host:port
-```
