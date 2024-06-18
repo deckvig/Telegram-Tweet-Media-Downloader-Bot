@@ -30,5 +30,5 @@ jobs:
           platforms: linux/amd64,linux/arm64
           push: true
           tags: 
-          ${{ secrets.DOCKERHUB_USERNAME }}/gallery-dl:latest
-          ${{ secrets.DOCKERHUB_USERNAME }}/gallery-dl:${{ steps.version.outputs.release_version }}
+            - ${{ secrets.DOCKERHUB_USERNAME }}/gallery-dl:latest
+            - ${{ secrets.DOCKERHUB_USERNAME }}/gallery-dl:${{ steps.version.outputs.release_version }}
