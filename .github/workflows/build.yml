@@ -29,4 +29,6 @@ jobs:
           file: ./Dockerfile
           platforms: linux/amd64,linux/arm64
           push: true
-          tags: ${{ secrets.DOCKERHUB_USERNAME }}/telegram-tweet-media-downloader:latest
+          tags: 
+          ${{ secrets.DOCKERHUB_USERNAME }}/gallery-dl:latest
+          ${{ secrets.DOCKERHUB_USERNAME }}/gallery-dl:${{ steps.version.outputs.release_version }}
