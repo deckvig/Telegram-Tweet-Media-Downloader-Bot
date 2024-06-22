@@ -80,7 +80,7 @@ class tMsgText:
         logging.debug(f"Found {len(urls)} matches: {urls}")
 
         # Convert URLs if they match the specific Twitter patterns
-        convertedUrls: list[str] = [convert_twitter_url(url) for url in urls]
+        convertedUrls: list[str] = [self.convert_twitter_url(url) for url in urls]
         logging.debug(f"Converted {len(convertedUrls)} matches into twitter.com format URLs: {convertedUrls}")
         
         return convertedUrls
