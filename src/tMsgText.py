@@ -65,16 +65,26 @@ class tMsgText:
             self.reply([False, "Couldn't find a valid URL to use"])
 
 
-    def parseRegex(self, toParse: str) -> list[str]:
-        logging.debug(f"Parsing text against regex")
-        urls: list[str] = re.findall(self.urlRegex, toParse)
-        logging.debug(f"Found {len(urls)} matches")
+    def parseRegex(self, toParse: str) -> List[str]:
+        logging.debug("Parsing text against regex")
         
-        # Replace 'value' in http(s)://<value>.com with 'twitter'. This will
-        # attempt to convert URLs like vxtwitter.com, fxtwitter.com, x.com, etc
-        # into twitter.com URLs (assuming they're interchangeable)
-        convertedUrls: list[str] = list(map(lambda x: re.sub(pattern=r'(http[s]?://)([a-zA-Z]+|[0-9]+|[^?\s]+)(.com)', repl=r'\1twitter\3', string=x), urls))
-        logging.debug(f"Converted {len(convertedUrls)} matches into twitter.com format URLs")
+        # Find all URLs matching the regex pattern
+        urls: List[str] = re.findall(self.urlRegex, toParse)
+        logging.debug(f"Found {len(urls)} matches: {urls}")
+
+        def convert_twitter_url(url: str) -> str:
+            # Only convert URLs that match Twitter's pattern
+            if re.match(r'http[s]?://(vx|fx|[a-z]*?)twitter\.com', url):
+                return re.sub(r'(http[s]?://)(vx|fx|[a-z]*?)(twitter\.com)', r'\1twitter\3', url)
+            elif re.match(r'http[s]?://x\.com', url):
+                return re.sub(r'(http[s]?://)x(\.com)', r'\1twitter\2', url)
+            else:
+                return url
+
+        # Convert URLs if they match the specific Twitter patterns
+        convertedUrls: List[str] = [convert_twitter_url(url) for url in urls]
+        logging.debug(f"Converted {len(convertedUrls)} matches into twitter.com format URLs: {convertedUrls}")
+        
         return convertedUrls
 
     def downloadUrl(self, url: str) -> tuple[str, int]:
