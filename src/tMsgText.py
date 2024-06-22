@@ -74,13 +74,12 @@ class tMsgText:
 
         def convert_twitter_url(url: str) -> str:
             # Only convert URLs that match Twitter's pattern
-            if re.match(r'http[s]?://(vx|fx|[a-z]*?)twitter\.com', url):
-                return re.sub(r'(http[s]?://)(vx|fx|[a-z]*?)(twitter\.com)', r'\1twitter\3', url)
+            if re.match(r'http[s]?://([a-zA-Z0-9]+?)twitter\.com', url):
+                return re.sub(r'(http[s]?://)([a-zA-Z0-9]+?)twitter\.com', r'\1twitter.com', url)
             elif re.match(r'http[s]?://x\.com', url):
                 return re.sub(r'(http[s]?://)x(\.com)', r'\1twitter\2', url)
             else:
                 return url
-
         # Convert URLs if they match the specific Twitter patterns
         convertedUrls: list[str] = [convert_twitter_url(url) for url in urls]
         logging.debug(f"Converted {len(convertedUrls)} matches into twitter.com format URLs: {convertedUrls}")
