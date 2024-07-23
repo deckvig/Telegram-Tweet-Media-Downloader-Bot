@@ -24,7 +24,7 @@ class bot:
         logging.info("Using proxies from environment variables")  # Log information about used proxies
         proxies = {
             'http://': os.environ.get("HTTP_PROXY"),
-            'https://': os.environ.get("HTTPS_PROXY"),
+            'https://': os.environ.get("HTTPS_PROXY")
         }
         logging.info("Attempting to verify Telegram API token")
         try:
