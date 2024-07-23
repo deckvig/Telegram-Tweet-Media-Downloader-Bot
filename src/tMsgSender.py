@@ -42,8 +42,8 @@ class tMsgSender:
     def sendRequest(self, msgParams: list) -> recievedData:
         requestString = self.generateRequest(msgParams)
         proxies = {
-            'http://': os.environ.get("HTTP_PROXY"),
-            'https://': os.environ.get("HTTPS_PROXY")
+            'http': os.environ.get("HTTP_PROXY"),
+            'https': os.environ.get("HTTPS_PROXY")
         }
         try:
             with httpx.Client(proxies=proxies, verify=False) as client:
