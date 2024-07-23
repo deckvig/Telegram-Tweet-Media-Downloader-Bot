@@ -28,7 +28,8 @@ class bot:
         }
         logging.info("Attempting to verify Telegram API token")
         try:
-            with httpx.Client(proxies=proxies, verify=False) as client:
+            timeout = httpx.Timeout(connect=10.0, read=120.0)
+            with httpx.Client(proxies=proxies, verify=False,timeout=timeout) as client:
                 testResponse = client.get(f"https://api.telegram.org/bot{conf.tToken}/getMe")
                 if testResponse.status_code == 200:
                     self.bottoken = conf.tToken

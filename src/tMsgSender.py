@@ -46,7 +46,8 @@ class tMsgSender:
             'https://': os.environ.get("HTTPS_PROXY")
         }
         try:
-            with httpx.Client(proxies=proxies, verify=False) as client:
+            timeout = httpx.Timeout(connect=10.0, read=120.0)
+            with httpx.Client(proxies=proxies, verify=False,timeout=timeout) as client:
                 response = client.get(requestString, timeout=(5, 60))
                 return recievedData(response.status_code == 200, statusCode=response.status_code, content=response.content)
         except Exception as e:
