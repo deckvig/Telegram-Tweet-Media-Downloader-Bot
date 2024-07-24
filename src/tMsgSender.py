@@ -42,8 +42,8 @@ class tMsgSender:
     def sendRequest(self, msgParams: list) -> recievedData:
         requestString = self.generateRequest(msgParams)
         proxies = {
-            'http://': os.environ.get("HTTP_PROXY"),
-            'https://': os.environ.get("HTTPS_PROXY")
+            'http://': os.environ.get("P_HTTP_PROXY"),
+            'https://': os.environ.get("P_HTTPS_PROXY")
         }
         try:
             timeout = httpx.Timeout(connect=60.0, read=60.0, write=60.0, pool=60.0)

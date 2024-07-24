@@ -1,4 +1,4 @@
-import time, sys, httpx, random, json, logging, subprocess, os
+import time, sys, httpx, random, json, logging, subprocess, os, urllib3
 from tMsgSender import tMsgSender
 from tMsgFetcher import tMsgFetcher, messageInfo
 from tMsgText import tMsgText
@@ -23,8 +23,8 @@ class bot:
     def verifyAPIToken(self):
         logging.info("Using proxies from environment variables")  # Log information about used proxies
         proxies = {
-            'http://': os.environ.get("HTTP_PROXY"),
-            'https://': os.environ.get("HTTPS_PROXY")
+            'http://': os.environ.get("P_HTTP_PROXY"),
+            'https://': os.environ.get("P_HTTPS_PROXY")
         }
         logging.info("Attempting to verify Telegram API token")
         try:
@@ -73,6 +73,7 @@ class bot:
                 time.sleep(sleepTime)
 
 if __name__ == '__main__':
+    urllib3.disable_warnings(urllib3.exceptions.InsecureRequestWarning)
     print("Loading configuration")
     conf = Config()
     logging.basicConfig(format='%(asctime)s %(levelname)s - %(message)s', level=conf.logLevel)
