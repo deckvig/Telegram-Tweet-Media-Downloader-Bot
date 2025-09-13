@@ -1,24 +1,29 @@
-# Use the Python 3 Docker image
+# 使用官方的 Golang 镜像作为构建环境
+FROM golang:1.23.0-alpine
+
+# 设置工作目录
+WORKDIR /app
+
+# 将当前目录的文件复制到 Docker 容器中
+COPY . .
+
+# 下载依赖项并编译程序
+RUN go mod download && go build .
+
+# 使用 Ubuntu 作为运行时环境
 FROM python:alpine
-
-LABEL org.opencontainers.image.source=https://github.com/brandonmoss-99/Telegram-Tweet-Media-Downloader-Bot
-LABEL org.opencontainers.image.description="A telegram bot which downloads media from twitter links sent to it"
-LABEL org.opencontainers.image.licenses=GPL-2.0-only
-
-RUN apk update && apk add --no-cache tini
-
-WORKDIR /bot
 
 COPY requirements.txt requirements.txt
 RUN pip3 install -r requirements.txt
 
-# gallery-dl expects the conf to live at /etc/gallery-dl.conf
-# Both files use .*, so that if the file doesn't exist, Docker won't error
-COPY gallery-dl.* /etc/gallery-dl.conf
-# COPY twitter_cookies.* /etc/twitter_cookies.txt
+# 设置工作目录
+WORKDIR /root/
 
-# Copy the source files over
-COPY ./src ./src
+# 从构建阶段复制编译好的程序到运行时环境
+COPY --from=0 /app/telegram-bot .
 
-# Run the bot.py file
-ENTRYPOINT [ "/sbin/tini", "--", "python", "src/bot.py" ]
+# 暴露程序可能监听的端口（如果你的程序是一个服务器）
+# EXPOSE 8080  # 根据需要修改
+
+# 运行程序
+CMD ["./telegram-bot"]
