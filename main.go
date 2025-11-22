@@ -15,7 +15,6 @@ import (
 
 var (
 	telegramBotToken = os.Getenv("TELEGRAM_BOT_TOKEN")
-	backendURL       = os.Getenv("BACKEND_URL")
 	lastUpdateIDFile = "last_update_id.txt" // 用于存储最后一个处理的 update_id
 	// 匹配 http 或 https 开头，后面跟着非空格或非中文逗号的字符
 	urlRegex = regexp.MustCompile(`https?://[^\s，]+`)
@@ -184,7 +183,7 @@ func runDownloadWithRetry(url string, chatID int64) error {
 }
 
 func main() {
-	if telegramBotToken == "" || backendURL == "" {
+	if telegramBotToken == "" {
 		log.Fatal("TELEGRAM_BOT_TOKEN or BACKEND_URL environment variable is not set.")
 	}
 
