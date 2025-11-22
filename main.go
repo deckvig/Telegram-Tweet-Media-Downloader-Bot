@@ -184,7 +184,7 @@ func runDownloadWithRetry(url string, chatID int64) error {
 
 func main() {
 	if telegramBotToken == "" {
-		log.Fatal("TELEGRAM_BOT_TOKEN or BACKEND_URL environment variable is not set.")
+		log.Fatal("TELEGRAM_BOT_TOKEN environment variable is not set.")
 	}
 
 	lastUpdateID, err := getLastUpdateID()
